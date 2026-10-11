@@ -1,6 +1,6 @@
 """Fine-tune DistilBERT to decide whether an agent tool call should be allowed (0) or denied (1).
 
-Example (Colab, free T4):
+Example (Colab, A100):
     python train_distilbert.py --data-dir LucidAI-Dataset/data --input a --out runs/distilbert_a
     python train_distilbert.py --data-dir LucidAI-Dataset/data --input b --out runs/distilbert_b
 
@@ -25,9 +25,9 @@ from transformers import (AutoModelForSequenceClassification, AutoTokenizer, Tra
                           TrainingArguments, set_seed)
 from transformers.trainer_utils import get_last_checkpoint
 
-DEFAULTS = {  # per input format: (train rows, max tokens, batch size)
-    "a": (100_000, 128, 64),
-    "b": (60_000, 512, 16),
+DEFAULTS = {  # per input format: (train rows, max tokens, batch size); 0 rows = the whole split
+    "a": (0, 128, 64),
+    "b": (0, 512, 32),
 }
 META = ["id", "label", "length_bucket", "difficulty"]
 
